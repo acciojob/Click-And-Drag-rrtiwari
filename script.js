@@ -1,26 +1,49 @@
 const container = document.querySelector('.items');
-let isDragging = false;
-let startX = 0;
-let scrollLeft = 0;
+const cubes = document.querySelectorAll('.item');
+let selectedCube = null;
+let offsetX = 0;
+let offsetY = 0;
 
-container.addEventListener('mousedown', (e) => {
-  isDragging = true;
-  startX = e.clientX;
-  scrollLeft = container.scrollLeft;
-  container.style.cursor = 'grabbing';
+cubes.forEach((cube, i) => {
+  const cols = 5;
+  const size = 100;
+  const gap = 10;
+  const row = Math.floor(i / cols);
+  const col = i % cols;
+  cube.style.left = col * (size + gap) + 'px';
+  cube.style.top = row * (size + gap) + 'px';
+
+  cube.addEventListener('mousedown', (e) => {
+    selectedCube = cube;
+    const rect = cube.getBoundingClientRect();
+    const containerRect = container.getBoundingClientRect();
+    offsetX = e.clientX - rect.left;
+    offsetY = e.clientY - rect.top;
+    cube.style.zIndex = 1000;
+    cube.style.cursor = 'grabbing';
+    moveCube(e.pageX, e.pageY, containerRect);
+  });
 });
 
-container.addEventListener('mousemove', (e) => {
-  if (!isDragging) return;
-  const walk = e.clientX - startX;
-  container.scrollLeft = scrollLeft - walk;
+document.addEventListener('mousemove', (e) => {
+  if (!selectedCube) return;
+  const containerRect = container.getBoundingClientRect();
+  moveCube(e.pageX, e.pageY, containerRect);
 });
 
-container.addEventListener('mouseup', () => {
-  isDragging = false;
-  container.style.cursor = 'pointer';
+document.addEventListener('mouseup', () => {
+  if (selectedCube) {
+    selectedCube.style.cursor = 'grab';
+    selectedCube = null;
+  }
 });
 
-container.addEventListener('mouseleave', () => {
-  isDragging = false;
-});
+function moveCube(pageX, pageY, containerRect) {
+  const cubeRect = selectedCube.getBoundingClientRect();
+  let left = pageX - containerRect.left - offsetX;
+  let top = pageY - containerRect.top - offsetY;
+  left = Math.max(0, Math.min(left, containerRect.width - cubeRect.width));
+  top = Math.max(0, Math.min(top, containerRect.height - cubeRect.height));
+  selectedCube.style.left = left + 'px';
+  selectedCube.style.top = top + 'px';
+}
