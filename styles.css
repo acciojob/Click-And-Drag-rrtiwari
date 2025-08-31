@@ -3,9 +3,11 @@ html {
   background: url('https://source.unsplash.com/NFs6dRTBgaM/2000x2000') fixed;
   background-size: cover;
 }
+
 *, *:before, *:after {
   box-sizing: inherit;
 }
+
 body {
   min-height: 100vh;
   display: flex;
@@ -15,25 +17,37 @@ body {
   font-size: 20px;
   margin: 0;
 }
+
 .items {
-  position: relative;
-  width: 1000px;
-  height: 600px;
-  border: 2px solid white;
-  background: rgba(255,255,255,0.1);
-}
-.item {
-  width: 100px;
-  height: 100px;
-  position: absolute;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-size: 20px;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+  width: 80vw;
+  height: 300px;
+  border: 2px solid white;
+  background: rgba(255, 255, 255, 0.1);
   cursor: grab;
   user-select: none;
 }
+
+.items.active {
+  cursor: grabbing;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.item {
+  min-width: 200px;
+  height: 100%;
+  margin: 10px;
+  font-size: 40px;
+  font-weight: bold;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .item:nth-child(9n+1) { background: dodgerblue;}
 .item:nth-child(9n+2) { background: goldenrod;}
 .item:nth-child(9n+3) { background: paleturquoise;}

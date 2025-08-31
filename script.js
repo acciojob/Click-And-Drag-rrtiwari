@@ -1,49 +1,30 @@
 const container = document.querySelector('.items');
-const cubes = document.querySelectorAll('.item');
-let selectedCube = null;
-let offsetX = 0;
-let offsetY = 0;
+let isDown = false;
+let startX;
+let scrollLeft;
 
-cubes.forEach((cube, i) => {
-  const cols = 5;
-  const size = 100;
-  const gap = 10;
-  const row = Math.floor(i / cols);
-  const col = i % cols;
-  cube.style.left = col * (size + gap) + 'px';
-  cube.style.top = row * (size + gap) + 'px';
-
-  cube.addEventListener('mousedown', (e) => {
-    selectedCube = cube;
-    const rect = cube.getBoundingClientRect();
-    const containerRect = container.getBoundingClientRect();
-    offsetX = e.clientX - rect.left;
-    offsetY = e.clientY - rect.top;
-    cube.style.zIndex = 1000;
-    cube.style.cursor = 'grabbing';
-    moveCube(e.pageX, e.pageY, containerRect);
-  });
+container.addEventListener('mousedown', (e) => {
+  isDown = true;
+  container.classList.add('active');
+  startX = e.pageX - container.offsetLeft;
+  scrollLeft = container.scrollLeft;
 });
 
-document.addEventListener('mousemove', (e) => {
-  if (!selectedCube) return;
-  const containerRect = container.getBoundingClientRect();
-  moveCube(e.pageX, e.pageY, containerRect);
+container.addEventListener('mouseleave', () => {
+  isDown = false;
+  container.classList.remove('active');
 });
 
-document.addEventListener('mouseup', () => {
-  if (selectedCube) {
-    selectedCube.style.cursor = 'grab';
-    selectedCube = null;
-  }
+container.addEventListener('mouseup', () => {
+  isDown = false;
+  container.classList.remove('active');
 });
 
-function moveCube(pageX, pageY, containerRect) {
-  const cubeRect = selectedCube.getBoundingClientRect();
-  let left = pageX - containerRect.left - offsetX;
-  let top = pageY - containerRect.top - offsetY;
-  left = Math.max(0, Math.min(left, containerRect.width - cubeRect.width));
-  top = Math.max(0, Math.min(top, containerRect.height - cubeRect.height));
-  selectedCube.style.left = left + 'px';
-  selectedCube.style.top = top + 'px';
-}
+container.addEventListener('mousemove', (e) => {
+  if (!isDown) return;
+  e.preventDefault();
+  const x = e.pageX - container.offsetLeft;
+  const walk = (x - startX) * 2;
+  container.scrollLeft = scrollLeft - walk;
+});
+
