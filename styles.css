@@ -15,8 +15,8 @@ body {
   margin: 0;
 }
 .items {
-  width: 800px;
-  height: 300px;
+  width: 320px;
+  height: 260px;
   border: 2px solid white;
   background: rgba(255,255,255,0.08);
   overflow-x: scroll;
@@ -31,9 +31,9 @@ body {
 }
 .item {
   display: inline-flex;
-  min-width: 220px;
+  min-width: 360px;
   height: 100%;
-  margin: 10px;
+  margin: 6px;
   font-size: 40px;
   font-weight: 700;
   color: white;
