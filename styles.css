@@ -18,7 +18,7 @@ body {
   width: 800px;
   height: 300px;
   border: 2px solid white;
-  background: rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.08);
   overflow-x: scroll;
   overflow-y: hidden;
   white-space: nowrap;
@@ -27,19 +27,19 @@ body {
 }
 .items.active {
   cursor: grabbing;
-  background: rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.16);
 }
 .item {
-  display: inline-block;
+  display: inline-flex;
   min-width: 220px;
   height: 100%;
   margin: 10px;
-  color: white;
   font-size: 40px;
   font-weight: 700;
-  display: inline-flex;
+  color: white;
   align-items: center;
   justify-content: center;
+  user-select: none;
 }
 .item:nth-child(9n+1) { background: dodgerblue;}
 .item:nth-child(9n+2) { background: goldenrod;}
